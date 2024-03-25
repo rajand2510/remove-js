@@ -1,8 +1,8 @@
 #Title: Efficient DOM Removal with the removeElement Function
 
-```Stage: Proposal
+##Stage: Proposal
 
-```Description:
+##Description:
 
 This proposal introduces a new function, removeElement, for efficient
 and type-safe removal of elements from the DOM. Currently, there's no
@@ -10,7 +10,7 @@ single standardized way to achieve this. Developers often resort to
 various methods like parentNode.removeChild(), which can be cumbersome
 and error-prone, especially when dealing with collections of elements.
 
-```Problem:
+##Problem:
 
 The lack of a unified and type-safe function for DOM element removal
 leads to:
@@ -29,7 +29,7 @@ element directly element.remove(); } else { // Throw an error for
 unsupported types to prevent unexpected behavior throw new
 TypeError('removeElement: Unsupported element type'); } }
 
-```Benefits:
+##Benefits:
 
 Improved code readability and maintainability through a concise
 function. Enhanced efficiency for bulk element removal using spread
@@ -48,7 +48,7 @@ This proposal aims for broad compatibility with existing JavaScript
 code. The function doesn't introduce any new DOM methods and leverages
 existing APIs.
 
-```Future Considerations:
+##Future Considerations:
 
 Potential exploration of adding support for removing child elements from
 a specific parent element. Investigating browser performance
