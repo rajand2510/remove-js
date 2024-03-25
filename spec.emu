@@ -4,36 +4,56 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.4/styles/github.min.css">
 <script src="./spec.js"></script>
 <pre class="metadata">
-title: Proposal Title Goes Here
-stage: -1
-contributors: Your Name(s) Here
+title: Efficient DOM Cleanup with removeElement  
+stage: -1  
+contributors: Rajan Dhariyaparmar 
 </pre>
 
-<emu-clause id="sec-demo-clause">
-  <h1>This is an emu-clause</h1>
-  <p>This is an algorithm:</p>
-  <emu-alg>
-    1. Let _proposal_ be *undefined*.
-    1. If IsAccepted(_proposal_) is *true*, then
-      1. Let _stage_ be *0*<sub>ℤ</sub>.
-    1. Else,
-      1. Let _stage_ be *-1*<sub>ℤ</sub>.
-    1. Return ? ToString(_stage_).
-  </emu-alg>
-</emu-clause>
+<emu-clause id="sec-removeelement">
+  <h1>`removeElement(element)` Function Proposal</h1>
+  <p>This proposal introduces a new function, `removeElement`, for efficient and type-safe removal of elements from the DOM.</p>
 
-<emu-clause id="sec-is-accepted" type="abstract operation">
-  <h1>
-      IsAccepted (
-        _proposal_: an ECMAScript language value
-      ): a Boolean
-  </h1>
-  <dl class="header">
-    <dt>description</dt>
-    <dd>Tells you if the proposal was accepted</dd>
-  </dl>
+  <h2>Problem</h2>
+  <p>Currently, there's no single, standardized way to remove elements from the DOM in JavaScript. Developers often resort to various methods like `parentNode.removeChild()`, which can be cumbersome and error-prone, especially when dealing with collections of elements.</p>
+
+  <h2>Solution</h2>
+  <p>The `removeElement` function offers a more concise and robust solution:</p>
+
   <emu-alg>
-    1. If _proposal_ is not a String, or is not accepted, return *false*.
-    1. Return *true*.
+    <pre class="language-javascript">
+function removeElement(element) {
+  if (element instanceof NodeList || element instanceof HTMLCollection) {
+    // Efficiently remove elements in bulk using spread syntax
+    [...element].forEach(e => e.remove());
+  } else if (element instanceof Node) {
+    // Handle single DOM element directly
+    element.remove();
+  } else {
+    // Throw an error for unsupported types to prevent unexpected behavior
+    throw new TypeError('removeElement: Unsupported element type');
+  }
+}
+    </pre>
   </emu-alg>
+
+  <h3>Benefits</h3>
+  <ul>
+    <li>Improved readability and maintainability of code.</li>
+    <li>Enhanced efficiency for bulk element removal using spread syntax.</li>
+    <li>Type safety with error handling for unsupported types.</li>
+  </ul>
+
+  <h2>Examples</h2>
+  <p>Here's how to use `removeElement`:</p>
+
+  <pre class="language-javascript">
+const elements = document.querySelectorAll(".my-elements");
+removeElement(elements);  // Removes all elements with class "my-elements"
+
+const element = document.getElementById("unique-element");
+removeElement(element);  // Removes the element with ID "unique-element"
+  </pre>
+
+  <h2>Compatibility</h2>
+  <p>This proposal aims for broad compatibility with existing JavaScript code. The function doesn't introduce any new DOM methods and leverages existing APIs.</p>
 </emu-clause>
